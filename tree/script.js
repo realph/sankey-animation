@@ -12,12 +12,12 @@ function run(rawData) {
 
   const width = Math.max(400, window.innerWidth)
   // height is dynamic and depends on data, so let's make it a function so it will be computed in runtime
-  const height= () => margin.top + margin.bottom + hierarchy.leaves().length * (bandHeight * padding)
-  const margin = { top: 10, right: 130, bottom: 10, left: 10 }
+  const height = () => margin.top + margin.bottom + hierarchy.leaves().length * (bandHeight * padding)
+  const margin = { top: 100, right: 130, bottom: 10, left: 10 }
   const padding = 1.2 // padding between liks (1 = no padding)
   const psize = 7 // particle size
-  const bandHeight = 50
-  const speed = 0.7
+  const bandHeight = 100
+  const speed = 1.7
   const density = 7
   // const totalParticles = 500 // will be set below when the data is parsed
 
@@ -33,7 +33,7 @@ function run(rawData) {
   // Data
   //
 
-  const isLeaf = n => n.hasOwnProperty('males')
+  const isLeaf = n => n.hasOwnProperty('failed')
 
 
   // Convert the raw data from nested object format into `d3-hierarchy` compatible format,
@@ -46,16 +46,16 @@ function run(rawData) {
 
     return d3.hierarchy({ name: 'root', ...rawData }, getChildren)
       // convert each nodes's data into universal format: `{ name, groups: [{ key, value }, ...] }`
-      // so it does not depend on exact group names ('males', 'females')
+      // so it does not depend on exact group names ('failed', 'success')
       // later it will allow to reuse the chart with other groups
       .each(d => {
         // NOTE: node names should be unique
         const datum = { name: d.data.name }
         if (isLeaf(d.data)) {
           datum.groups = [{
-            key: 'males', value: d.data.males
+            key: 'failed', value: d.data.failed
           }, {
-            key: 'females', value: d.data.females
+            key: 'success', value: d.data.success
           }]
         }
         d.data = datum
@@ -109,9 +109,9 @@ function run(rawData) {
     .range(targets)
 
 
-  // takes a group type (e.g. 'males' or 'females') and returns a color
+  // takes a group type (e.g. 'failed' or 'success') and returns a color
   const colorScale = d3.scaleOrdinal()
-    .domain(['females', 'males'])
+    .domain(['success', 'failed'])
     .range(['plum', 'mediumslateblue'])
 
 
