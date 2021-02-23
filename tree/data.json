@@ -1,8 +1,14 @@
 {
   "authenticate": {
-      "failed": 150,
-      "success": 100
+    "frictionless": {
+      "failed": 100,
+      "success": 60
     },
+    "challenge": {
+      "failed": 50,
+      "success": 30
+    }
+  },
   "authorise": {
     "failed": 150,
     "success": 135
